@@ -1,0 +1,76 @@
+plugins {
+    id 'com.android.application'
+    id 'dagger.hilt.android.plugin'
+}
+
+android {
+    namespace 'com.orbitsoft.quwi'
+    compileSdk 33
+
+    defaultConfig {
+        applicationId "com.orbitsoft.quwi"
+        minSdk 26
+        targetSdk 33
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    viewBinding {
+        enabled = true
+    }
+}
+
+dependencies {
+
+    implementation "androidx.appcompat:appcompat:$versions.androidx_appcomapt"
+    implementation "com.google.android.material:material:$versions.material"
+    implementation "androidx.fragment:fragment:1.5.5"
+
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.4.1'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1'
+
+    //DI
+    implementation "com.google.dagger:hilt-android:$versions.hilt"
+    annotationProcessor "com.google.dagger:hilt-android-compiler:$versions.hilt"
+    annotationProcessor "com.google.dagger:hilt-compiler:$versions.hilt"
+
+    implementation "io.reactivex.rxjava3:rxandroid:$versions.rxjava"
+    implementation "io.reactivex.rxjava3:rxjava:$versions.rxjava"
+
+    implementation "com.squareup.retrofit2:retrofit:$versions.retrofit"
+    implementation "com.squareup.retrofit2:adapter-rxjava3:$versions.retrofit"
+    implementation "com.squareup.retrofit2:converter-moshi:$versions.retrofit"
+
+    // define a BOM and its version
+    implementation(platform("com.squareup.okhttp3:okhttp-bom:$versions.okhttp"))
+
+    // define any required OkHttp artifacts without version
+    implementation("com.squareup.okhttp3:okhttp")
+    implementation("com.squareup.okhttp3:logging-interceptor")
+
+    implementation "com.github.bumptech.glide:glide:$versions.glide"
+    annotationProcessor "com.github.bumptech.glide:compiler:$versions.glide"
+
+    implementation "androidx.room:room-runtime:$versions.room"
+    annotationProcessor "androidx.room:room-compiler:$versions.room"
+    implementation "androidx.room:room-rxjava3:$versions.room"
+
+    //navigation
+    implementation "androidx.navigation:navigation-fragment:$versions.nav_version"
+    implementation "androidx.navigation:navigation-ui:$versions.nav_version"
+}
