@@ -46,6 +46,7 @@ dependencies {
 
     //DI
     implementation "com.google.dagger:hilt-android:$versions.hilt"
+    androidTestImplementation 'junit:junit:4.12'
     annotationProcessor "com.google.dagger:hilt-android-compiler:$versions.hilt"
     annotationProcessor "com.google.dagger:hilt-compiler:$versions.hilt"
 

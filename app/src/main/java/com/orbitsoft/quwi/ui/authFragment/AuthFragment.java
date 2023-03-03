@@ -53,11 +53,13 @@ public class AuthFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
         observeLoginResponse();
+        observeLoginExceptionResponse();
         initUI();
     }
 
     public void initUI() {
         binding.btnLogin.setOnClickListener(btnView -> {
+            binding.textFieldPassword.setErrorEnabled(false);
             String email = binding.textFieldEmail.getEditText().getText().toString();
             String password = binding.textFieldPassword.getEditText().getText().toString();
             if (email.length() > 5 && validateEmail(email) && password.length() > 1) {
@@ -72,6 +74,18 @@ public class AuthFragment extends Fragment {
                     if (!loginResponse.getToken().isEmpty() && loginResponse.getToken() != null) {
                         NavHostFragment.findNavController(this)
                                 .navigate(R.id.action_authFragment_to_listFragment);
+                    }
+                })
+        );
+    }
+
+    public void observeLoginExceptionResponse() {
+        compositeDisposable.add(
+                mViewModel.getIsNeedShowError().subscribe(isNeed -> {
+                    if (isNeed) {
+                        binding.textFieldPassword
+                                .setError("Error happens. Please check email and password, " +
+                                        "then try again");
                     }
                 })
         );

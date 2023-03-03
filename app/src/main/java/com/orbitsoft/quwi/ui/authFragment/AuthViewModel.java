@@ -15,6 +15,8 @@ import io.reactivex.rxjava3.core.Scheduler;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import io.reactivex.rxjava3.subjects.BehaviorSubject;
+import io.reactivex.rxjava3.subjects.PublishSubject;
+import retrofit2.HttpException;
 
 @HiltViewModel
 public class AuthViewModel extends ViewModel {
@@ -25,6 +27,7 @@ public class AuthViewModel extends ViewModel {
 
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
     private final BehaviorSubject<LoginResponse> loginResponse = BehaviorSubject.create();
+    private final PublishSubject<Boolean> isNeedShowError = PublishSubject.create();
 
     @Inject
     public AuthViewModel(@NonNull RemoteDataSource remoteDataSource,
@@ -36,6 +39,10 @@ public class AuthViewModel extends ViewModel {
         return loginResponse;
     }
 
+    public PublishSubject<Boolean> getIsNeedShowError() {
+        return isNeedShowError;
+    }
+
     public void login(String email, String password) {
         compositeDisposable.add(
                 remoteDataSource.login(email, password)
@@ -45,6 +52,9 @@ public class AuthViewModel extends ViewModel {
                             localDataSource.saveToken(loginResponse.getToken());
                             this.loginResponse.onNext(loginResponse);
                         }, throwable -> {
+                            if(throwable instanceof HttpException) {
+                                isNeedShowError.onNext(true);
+                            }
                             System.out.print(throwable.getMessage());
                         })
         );
